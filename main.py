@@ -5,7 +5,7 @@ from disnake.ext.commands import InteractionBot
 import aiocron
 from pytz import timezone
 
-minecrafts: list[str] = ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", "Myncraft", "Mein Kraft", "Minecràft"]
+minecrafts: list[str] = ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", "Myncraft", "Minecràft"]
 def get_minecraft(): return choice(minecrafts)
 
 bot = InteractionBot()
