@@ -92,6 +92,7 @@ async def check_server():
             last_status = StatusBasics.fromDict(json.load(last_status_file))
         new_players = set(status.sample).difference(last_status.sample)
         if len(new_players) > 0 or status.online > last_status.online:
+            print("status updated to", status.toDict())
             print("saying minecraft from logged in user monitor")
             await (
                 bot.get_guild(999812620775346226)
