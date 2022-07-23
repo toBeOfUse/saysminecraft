@@ -92,12 +92,15 @@ async def check_server():
             last_status = StatusBasics.fromDict(json.load(last_status_file))
         new_players = set(status.sample).difference(last_status.sample)
         if len(new_players) > 0 or status.online > last_status.online:
+            print("saying minecraft from logged in user monitor")
             await (
                 bot.get_guild(999812620775346226)
                 # bot.get_guild(708955889276551198)
                     .text_channels[0]
                     .send(get_minecraft())
             )
+    else:
+        print("established initial status:", status.toDict())
     with open(last_status_path, mode="w+", encoding="utf-8") as last_status_file:
         json.dump(status.toDict(), last_status_file)
 
