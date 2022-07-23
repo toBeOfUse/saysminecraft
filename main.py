@@ -1,4 +1,5 @@
 # add with https://discord.com/api/oauth2/authorize?client_id=999819990582710382&permissions=2147534848&scope=bot%20applications.commands
+from datetime import datetime
 import json
 from random import choice
 from pathlib import Path
@@ -56,7 +57,11 @@ class StatusBasics():
         
     def __init__(self, online: int, sample: list[PingResponse.Players.Player]):
         self.online = online
-        self.sample = [StatusBasics.Player(x.name, x.id) for x in sample]
+        self.sample = (
+            [StatusBasics.Player(x.name, x.id) for x in sample]
+                if sample is not None
+                else []
+        )
     
     def toDict(self) -> dict:
         return {"online": self.online, "sample": [x.toDict() for x in self.sample]}
@@ -71,7 +76,12 @@ class StatusBasics():
 
 @loop(seconds=30)
 async def check_server():
-    status_instance = await server.async_status()
+    try:
+        status_instance = await server.async_status()
+    except:
+        error_time = datetime.now().isoformat(timespec='seconds')
+        print(f"unable to get server status at {error_time}")
+        return
     status = StatusBasics(
         status_instance.players.online,
         status_instance.players.sample
