@@ -76,7 +76,6 @@ async def check_server():
         status_instance.players.online,
         status_instance.players.sample
     )
-    print("got server status", status.toDict())
     last_status_path = Path("./last_status.json")
     if last_status_path.exists():
         with open(last_status_path) as last_status_file:
