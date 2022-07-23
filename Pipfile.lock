@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "18287d3a7f8f5a4d38d10b7652aa8132ceb43c0dbd54cb99967d5d5a030dc9da"
+            "sha256": "9d6fcb58d1bf30472490d5e120599cfc0a645badb20c9426c8f3f27a45a8f314"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -118,6 +118,14 @@
             "markers": "python_full_version >= '3.6.0'",
             "version": "==4.0.2"
         },
+        "asyncio-dgram": {
+            "hashes": [
+                "sha256:9ef55fc760f93c8212709329a1e28a1cf1c1f0fc8222f1be0227c2b7606a10a2",
+                "sha256:bc28a90bc0523009fb0da16ca983c1400ff403a315754d86e037910563697f91"
+            ],
+            "markers": "python_version >= '3.5'",
+            "version": "==2.1.2"
+        },
         "attrs": {
             "hashes": [
                 "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4",
@@ -134,6 +142,22 @@
             "markers": "python_full_version >= '3.6.0'",
             "version": "==2.1.0"
         },
+        "click": {
+            "hashes": [
+                "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",
+                "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==8.1.3"
+        },
+        "colorama": {
+            "hashes": [
+                "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da",
+                "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"
+            ],
+            "markers": "platform_system == 'Windows'",
+            "version": "==0.4.5"
+        },
         "croniter": {
             "hashes": [
                 "sha256:4f72faca42c00beb6e30907f1315145f43dfbe5ec0ad4ada24b4c0d57b86a33a",
@@ -149,6 +173,14 @@
             ],
             "index": "pypi",
             "version": "==2.5.1"
+        },
+        "dnspython": {
+            "hashes": [
+                "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e",
+                "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f"
+            ],
+            "markers": "python_version < '4' and python_full_version >= '3.6.0'",
+            "version": "==2.2.1"
         },
         "frozenlist": {
             "hashes": [
@@ -222,6 +254,14 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==3.3"
+        },
+        "mcstatus": {
+            "hashes": [
+                "sha256:16b1e117d0b74e2d056b80e177f112ee5cb4b8d25dc1da45aa5b3e714010ea1f",
+                "sha256:bbb79380a8e21fcc6188ed022f2c516ab59cf5a825a2eab95ed9b29ffede098f"
+            ],
+            "index": "pypi",
+            "version": "==9.2.0"
         },
         "multidict": {
             "hashes": [
