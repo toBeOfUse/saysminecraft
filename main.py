@@ -10,7 +10,10 @@ from disnake.ext.tasks import loop
 import aiocron
 from pytz import timezone
 from mcstatus import JavaServer
-from mcstatus.pinger import PingResponse
+
+from models import StatusBasics, BotConfig
+
+config = BotConfig.load_from_files()
 
 minecrafts: list[str] = ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", "Myncraft", "Minecràft"]
 def get_minecraft(): return choice(minecrafts)
@@ -34,45 +37,8 @@ async def say_minecraft(itx):
     print("saying minecraft from slash command")
     await itx.response.send_message(get_minecraft())
 
-with open("server.json") as server_file:
-    server_data = json.load(server_file)
-server = JavaServer(server_data["host"], server_data["port"])
-
-class StatusBasics():
-
-    class Player():
-
-        def __init__(self, name: str, id: str):
-            self.name = name
-            self.id = id
-
-        def __hash__(self) -> int:
-            return hash(self.id)
-        
-        def __eq__(self, other: "StatusBasics.Player"):
-            return self.id == other.id
-
-        def toDict(self) -> dict:
-            return { "name": self.name, "id": self.id }
-        
-    def __init__(self, online: int, sample: list[PingResponse.Players.Player]):
-        self.online = online
-        self.sample = (
-            [StatusBasics.Player(x.name, x.id) for x in sample]
-                if sample is not None
-                else []
-        )
-    
-    def toDict(self) -> dict:
-        return {"online": self.online, "sample": [x.toDict() for x in self.sample]}
-    
-    @classmethod
-    def fromDict(cls, src: dict):
-        return cls(
-            src["online"], 
-            [PingResponse.Players.Player(x) for x in src["sample"]]
-        )
-
+server = JavaServer(config.mc_server_host, config.mc_server_port)
+status_path = "./last_status.json"
 
 @loop(seconds=30)
 async def check_server():
@@ -86,31 +52,26 @@ async def check_server():
         status_instance.players.online,
         status_instance.players.sample
     )
-    last_status_path = Path("./last_status.json")
-    if last_status_path.exists():
-        with open(last_status_path) as last_status_file:
-            last_status = StatusBasics.fromDict(json.load(last_status_file))
+    last_status = StatusBasics.fromFile(status_path)
+    if last_status is not None:
         new_players = set(status.sample).difference(last_status.sample)
-        if len(new_players) > 0 or status.online > last_status.online:
+        if ((len(new_players) > 0 and len(status.sample) < 12) or
+                status.online > last_status.online):
             print("status updated to", status.toDict())
             print("saying minecraft from logged in user monitor")
             await (
-                bot.get_guild(999812620775346226)
-                # bot.get_guild(708955889276551198)
+                bot.get_guild(config.discord_alert_server_id)
                     .text_channels[0]
                     .send(get_minecraft())
             )
     else:
         print("established initial status:", status.toDict())
-    with open(last_status_path, mode="w+", encoding="utf-8") as last_status_file:
-        json.dump(status.toDict(), last_status_file)
+    status.toFile(status_path)
 
 @bot.event
 async def on_ready():
     print("bot ready")
     check_server.start()
 
-with open("token.txt") as token_file:
-    token = token_file.read()
 print("starting bot")
-bot.run(token)
+bot.run(config.token)
