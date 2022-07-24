@@ -11,12 +11,9 @@ import aiocron
 from pytz import timezone
 from mcstatus import JavaServer
 
-from models import StatusBasics, BotConfig
+from models import StatusBasics, BotConfig, get_minecraft
 
 config = BotConfig.load_from_files()
-
-minecrafts: list[str] = ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", "Myncraft", "Minecràft"]
-def get_minecraft(): return choice(minecrafts)
 
 bot = InteractionBot()
 
@@ -25,17 +22,22 @@ async def say_minecraft():
     print("saying minecraft from loop")
     await bot.wait_until_ready()
     for guild in bot.guilds:
-        await guild.text_channels[0].send(get_minecraft())
+        await guild.text_channels[0].send(**get_minecraft())
 
 @bot.event
 async def on_guild_join(guild: disnake.Guild):
     print("saying minecraft from guild join")
-    await guild.text_channels[0].send(get_minecraft())
+    await guild.text_channels[0].send(**get_minecraft())
 
 @bot.slash_command(description="Say \"Minecraft\"")
-async def say_minecraft(itx):
+async def say_minecraft(itx: disnake.ApplicationCommandInteraction):
     print("saying minecraft from slash command")
-    await itx.response.send_message(get_minecraft())
+    minecraft = get_minecraft()
+    if minecraft.large():
+        await itx.response.defer(ephemeral=False)
+        await itx.edit_original_message(**minecraft)
+    else:
+        await itx.response.send_message(**minecraft)
 
 server = JavaServer(config.mc_server_host, config.mc_server_port)
 status_path = "./last_status.json"
@@ -62,7 +64,7 @@ async def check_server():
             await (
                 bot.get_guild(config.discord_alert_server_id)
                     .text_channels[0]
-                    .send(get_minecraft())
+                    .send(**get_minecraft())
             )
     else:
         print("established initial status:", status.toDict())
