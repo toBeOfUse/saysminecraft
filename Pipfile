@@ -8,6 +8,7 @@ disnake = "*"
 aiocron = "*"
 pytz = "*"
 mcstatus = "*"
+tinydb = "*"
 
 [dev-packages]
 
