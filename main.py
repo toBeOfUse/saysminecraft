@@ -84,7 +84,7 @@ async def check_server():
             print("status updated to", status.toDict())
             print("saying minecraft from logged in user monitor")
             channel = (
-                await bot.get_guild(config.discord_alert_server_id)
+                bot.get_guild(config.discord_alert_server_id)
             ).text_channels[0]
             message = await channel.send(**get_minecraft())
             set_last_message(channel.id, message.id)
