@@ -93,27 +93,28 @@ class ProbabilityZone():
 simple_texts = ProbabilityZone(
     0.9,
     [TextMinecraft(x) for x in 
-        ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", 
-        "Myncraft", "Minecràft", "M to the I to the N to the E to the C to the R to the A-F-T"]
+        ["minecraft", "Minecraft", "MINECRAFT", "Mined Craft", "Minecràft",
+        "M to the I to the N to the E to the C to the R to the A-F-T",
+        "[british voice] minecrahft", "/maɪnkɹæft/", "mine craft"]
     ]
 )
 media = ProbabilityZone(
-    0.05,
+    0.1,
     [MediaMinecraft(
         "./assets/glitter.gif",
         "the word Minecraft in glittering pink text"
     )]
 )
-videos = ProbabilityZone(
-    0.05,
-    [MediaMinecraft(
-        "./assets/portal.mp4",
-        "a minecraft player attempts to jump into a nether portal placed high above "
-        "the ground. as he fails and lands heavily on the ground below, the minecraft "
-        "logo fades in over the footage."
-    )]
-)
-zones = [simple_texts, media, videos]
+# videos = ProbabilityZone(
+#     0.05,
+#     [MediaMinecraft(
+#         "./assets/portal.mp4",
+#         "a minecraft player attempts to jump into a nether portal placed high above "
+#         "the ground. as he fails and lands heavily on the ground below, the minecraft "
+#         "logo fades in over the footage."
+#     )]
+# )
+zones = [simple_texts, media]
 
 def get_minecraft() -> Minecraft:
     population: list[Minecraft] = []
